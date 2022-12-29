@@ -7,11 +7,11 @@
 # If the above line is not correctly displayed, fix your editor first!
 
 general {
-        colors = true
+  colors = true
 	color_good = "#00FF00"
-	color_degraded = "#FFFF00"
-        color_bad = "#FF0000"
-        interval = 1
+  color_degraded = "#FFFF00"
+  color_bad = "#FF0000"
+  interval = 1
 }
 
 order += "battery 0"

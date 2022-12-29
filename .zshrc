@@ -27,16 +27,14 @@ alias c="codium ."
 # python
 alias py="python3"
 
-# mkdir + cd == 'take'
-function mkcd () { mkdir -p "$@" && eval cd "\"\$$#\""; }
+# mkdir + cd = 'take'
+# function mkcd () { mkdir -p "$@" && eval cd "\"\$$#\""; }
 
 # opens this file 
 alias zrc="vim $HOME/.zshrc"
 
 # go
 alias gor="go run ."
-
-alias cdd="cd Desktop"
 
 # -----< oh-my-zsh >-----
 
@@ -71,7 +69,7 @@ ZSH_THEME="powerlevel10k/powerlevel10k" # set by `omz`
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
 
-plugins=(git zsh-autosuggestions)
+plugins=(git golang zsh-autosuggestions systemd)
 
 source $ZSH/oh-my-zsh.sh
 
@@ -81,9 +79,12 @@ source $ZSH/oh-my-zsh.sh
 # export LANG=en_US.UTF-8
 
 # Compilation flags
-# export ARCHFLAGS="-arch x86_64"
+export ARCHFLAGS="-arch x86_64"
+export EDITOR="vim"
 
 #THIS MUST BE AT THE END OF THE FILE FOR SDKMAN TO WORK!!!
 #export SDKMAN_DIR="$HOME/.sdkman"
 #[[ -s "$HOME/.sdkman/bin/sdkman-init.sh" ]] && source "$HOME/.sdkman/bin/sdkman-init.sh"
+
 alias ds='/usr/bin/git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME'
+complete -cf doas
