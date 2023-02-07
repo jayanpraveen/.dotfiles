@@ -1,5 +1,3 @@
-#export PATH=$PATH:/usr/local/sbin
-
 # Go
 export GOPATH=$HOME/go
 export GOBIN=$GOPATH/bin
@@ -33,27 +31,19 @@ alias py="python3"
 # opens this file 
 alias zrc="vim $HOME/.zshrc"
 
-# go
-alias gor="go run ."
+#alias rm="trash-put --force "
+
+alias open='xdg-open '
 
 # -----< oh-my-zsh >-----
 
 export CLICOLOR=1
 export TERM=xterm-256color
 
-# Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
-# Initialization code that may require console input (password prompts, [y/n]
-# confirmations, etc.) must go above this block; everything else may go below.
-# if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
-#   source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
-# fi
-
 # Path to your oh-my-zsh installation.
 export ZSH=$HOME/.oh-my-zsh
 
-ZSH_THEME="powerlevel10k/powerlevel10k" # set by `omz`
-# To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
-[[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
+ZSH_THEME="robbyrussell"
 
 # Uncomment the following line if you want to disable marking untracked files
 # under VCS as dirty. This makes repository status check for large repositories
@@ -76,15 +66,22 @@ source $ZSH/oh-my-zsh.sh
 # export MANPATH="/usr/local/man:$MANPATH"
 
 # You may need to manually set your language environment
-# export LANG=en_US.UTF-8
+export LANG=en_US.UTF-8
 
 # Compilation flags
 export ARCHFLAGS="-arch x86_64"
+
 export EDITOR="vim"
+
+
+alias cdd="cd $HOME/Desktop"
+alias tsh="trash-put --force"
+alias ds='/usr/bin/git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME'
+alias _="doas "
+complete -cf doas
 
 #THIS MUST BE AT THE END OF THE FILE FOR SDKMAN TO WORK!!!
 #export SDKMAN_DIR="$HOME/.sdkman"
-#[[ -s "$HOME/.sdkman/bin/sdkman-init.sh" ]] && source "$HOME/.sdkman/bin/sdkman-init.sh"
+[[ -s "$HOME/.sdkman/bin/sdkman-init.sh" ]] && source "$HOME/.sdkman/bin/sdkman-init.sh"
 
-alias ds='/usr/bin/git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME'
-complete -cf doas
+source /usr/share/nvm/init-nvm.sh
