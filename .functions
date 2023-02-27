@@ -1,0 +1,16 @@
+# function mkcd () { mkdir -p "$@" && eval cd "\"\$$#\""; } # mkdir + cd = 'take'
+
+function port () { lsof -i :"$*" }
+
+function ipa () { ip addr | grep "inet " | grep -Fv 127.0.0.1 | awk '{print $2}' }
+
+# lazy load nvm
+lln() {
+  echo "staring nvm..."
+  unset -f node
+  export NVM_DIR=~/.nvm
+  [[ -s "$NVM_DIR/nvm.sh" ]] && source /usr/share/nvm/init-nvm.sh
+}
+
+node() { echo "staring node..."; lln && node $@ }
+
