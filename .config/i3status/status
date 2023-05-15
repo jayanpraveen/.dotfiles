@@ -1,0 +1,7 @@
+#!/bin/sh
+i3status | (read line && echo "$line" && read line && echo "$line" && read line && echo "$line" && while :
+do
+  read line
+  out=$($HOME/wttr)
+  echo "${line/]},{\"full_text\":\"$out\",\"color\":\"#00FF00\"}]" || exit 1
+done)

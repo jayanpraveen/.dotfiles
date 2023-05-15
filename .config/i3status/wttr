@@ -1,0 +1,34 @@
+#!/bin/sh
+
+# Displays today's precipication chance (🌧️), daily low (🥶), current (🍀) and daily high (🌞).
+
+weatherreport="${XDG_CACHE_HOME:-$HOME/.cache}/weatherreport"
+
+get_precip_chance() {
+	echo "$weatherdata" | sed '16q;d' |      # Extract line 16 from file
+		grep -wo "[0-9]*%" |                   # Find a sequence of digits followed by '%'
+		sort -rn |                             # Sort in descending order
+		head -1q                               # Extract first line
+}
+
+get_daily_highlow() {
+	echo "$weatherdata" | sed '13q;d' |      # Extract line 13 from file
+		grep -o "m\\([-+]\\)[0-9]\\+" |        # Find temperatures in the format "m<signed number>"
+		sed 's/[+m]//g' |                      # Remove '+' and 'm'
+		sort -g |                              # Sort in ascending order
+		sed -e 1b -e '$!d'                     # Extract the first and last lines
+}
+
+get_current() {
+  echo "$weatherdata" | sed '4q;d' |       # Extract line 13 from file
+    grep -o "m\\([-+]\\)[0-9]\\+" |        # Find temperatures in the format "m<signed number>"
+    sed 's/[+m]//g'                        # Remove '+' and 'm'
+}
+
+show_weather() {
+  weatherdata=$(< $weatherreport)
+  printf "🌧️%s 🥶%s° 🌞%s° 🍀:%s°"  $(get_precip_chance) $(get_daily_highlow) $(get_current)
+}
+
+show_weather
+
