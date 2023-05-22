@@ -1,34 +1,49 @@
 #!/bin/sh
 
-# Displays today's precipication chance (🌧️), daily low (🥶), current (🍀) and daily high (🌞).
+# Displays today's precipication chance (🌧️), daily low (❄️), daily high (🌞) and current (🌿).
 
+url="${WTTRURL:-wttr.in}"
 weatherreport="${XDG_CACHE_HOME:-$HOME/.cache}/weatherreport"
 
+# Get a weather report from 'wttr.in' and save it locally.
+get_forecast() { 
+	curl -sf "$url/$LOCATION" > "$weatherreport" || exit 1; 
+}
+
+# Update today's forecast 
+check_forecast() {
+	[ -s "$weatherreport" ] && [ "$(stat -c %y "$weatherreport" 2>/dev/null | # Check time of last data modification
+		cut -d' ' -f1)" = "$(date '+%Y-%m-%d')" ]
+}
+
 get_precip_chance() {
-	echo "$weatherdata" | sed '16q;d' |      # Extract line 16 from file
+	echo "$weatherdata" | sed '16q;d' |        # Extract line 16 from file
 		grep -wo "[0-9]*%" |                   # Find a sequence of digits followed by '%'
 		sort -rn |                             # Sort in descending order
 		head -1q                               # Extract first line
 }
 
 get_daily_highlow() {
-	echo "$weatherdata" | sed '13q;d' |      # Extract line 13 from file
+	echo "$weatherdata" | sed '13q;d' |        # Extract line 13 from file
 		grep -o "m\\([-+]\\)[0-9]\\+" |        # Find temperatures in the format "m<signed number>"
 		sed 's/[+m]//g' |                      # Remove '+' and 'm'
 		sort -g |                              # Sort in ascending order
 		sed -e 1b -e '$!d'                     # Extract the first and last lines
 }
 
+# run a cron/systemd.Timers to get the current
 get_current() {
-  echo "$weatherdata" | sed '4q;d' |       # Extract line 13 from file
-    grep -o "m\\([-+]\\)[0-9]\\+" |        # Find temperatures in the format "m<signed number>"
-    sed 's/[+m]//g'                        # Remove '+' and 'm'
+ 	echo "$weatherdata" | sed '4q;d' |         # Extract line 13 from file
+		grep -o "m\\([-+]\\)[0-9]\\+" |        # Find temperatures in the format "m<signed number>"
+		sed 's/[+m]//g'                        # Remove '+' and 'm'
 }
 
 show_weather() {
   weatherdata=$(< $weatherreport)
-  printf "🌧️%s 🥶%s° 🌞%s° 🍀:%s°"  $(get_precip_chance) $(get_daily_highlow) $(get_current)
+  printf "🌧️%s ❄️%s° 🌞%s° 🌿%s°" $(get_precip_chance) $(get_daily_highlow) $(get_current)
 }
+
+check_forecast || get_forecast
 
 show_weather
 
