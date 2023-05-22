@@ -10,6 +10,7 @@
 # Please see https://i3wm.org/docs/userguide.html for a complete reference!
 
 set $mod Mod4
+set $alt Mod1
 
 # Font for window titles. Will also be used by the bar unless a different font
 # is used in the bar {} block below.
@@ -55,7 +56,7 @@ tiling_drag modifier titlebar
 bindsym $mod+Shift+q kill
 
 # take fullscreen screenshot 
-bindsym Print exec --no-startup-id xfce4-screenshooter --fullscreen --mouse --save $HOME/Screenshots/"Screenshot $(date --rfc-3339=ns | cut -c 1-22)".png
+bindsym Control+Print exec --no-startup-id xfce4-screenshooter --fullscreen --mouse --save $HOME/Screenshots/"Screenshot $(date --rfc-3339=ns | cut -c 1-22)".png
 
 # start dmenu (a program launcher)
 bindsym $mod+d exec --no-startup-id "dmenu_run -fn 'Sans-11'"
@@ -163,76 +164,82 @@ bindsym $mod+Shift+e exec "i3-nagbar -t warning -m 'You pressed the exit shortcu
 
 # resize window (you can also use the mouse for that)
 mode "resize" {
-        # These bindings trigger as soon as you enter the resize mode
+	# These bindings trigger as soon as you enter the resize mode
 
-        # Pressing left will shrink the window’s width.
-        # Pressing right will grow the window’s width.
-        # Pressing up will shrink the window’s height.
-        # Pressing down will grow the window’s height.
-        bindsym j resize shrink width 10 px or 10 ppt
-        bindsym k resize grow height 10 px or 10 ppt
-        bindsym l resize shrink height 10 px or 10 ppt
-        bindsym semicolon resize grow width 10 px or 10 ppt
+	# Pressing left will shrink the window’s width.
+	# Pressing right will grow the window’s width.
+	# Pressing up will shrink the window’s height.
+	# Pressing down will grow the window’s height.
+	bindsym j resize shrink width 10 px or 10 ppt
+	bindsym k resize grow height 10 px or 10 ppt
+	bindsym l resize shrink height 10 px or 10 ppt
+	bindsym semicolon resize grow width 10 px or 10 ppt
 
-        # same bindings, but for the arrow keys
-        bindsym Left resize shrink width 10 px or 10 ppt
-        bindsym Down resize grow height 10 px or 10 ppt
-        bindsym Up resize shrink height 10 px or 10 ppt
-        bindsym Right resize grow width 10 px or 10 ppt
+	# same bindings, but for the arrow keys
+	bindsym Left resize shrink width 10 px or 10 ppt
+	bindsym Down resize grow height 10 px or 10 ppt
+	bindsym Up resize shrink height 10 px or 10 ppt
+	bindsym Right resize grow width 10 px or 10 ppt
 
-        # back to normal: Enter or Escape or $mod+r
-        bindsym Return mode "default"
-        bindsym Escape mode "default"
-        bindsym $mod+r mode "default"
+	# back to normal: Enter or Escape or $mod+r
+	bindsym Return mode "default"
+	bindsym Escape mode "default"
+	bindsym $mod+r mode "default"
 }
 
 bindsym $mod+r mode "resize"
 
 ### Colors ###
 
-# Window colors
-set $bgcolor	#282828
-set $ibgcolor	#1D2021
-set $textcolor	#282828
-set $ubgcolor	#D79921
-set $gruvbox_red  #FB4934
-set $textcolor_light #EBDBB2
+# Window				colors
+set $bgcolor			#282828
+set $ibgcolor			#1D2021
+set $textcolor			#282828
+set $ubgcolor			#D79921
+set $gruvbox_red		#FB4934
+set $textcolor_light	#EBDBB2
 
-#		 	                    Border		Background	Text		    Indicator
-client.focused	 	        #998759	  $bgcolor	  $ubgcolor	  $bgcolor
-client.unfocused	        $bgcolor	$bgcolor	  $ubgcolor	  $bgcolor
-client.focused_inactive	  $bgcolor	$bgcolor	  $textcolor	$bgcolor
-client.urgent		          $bgcolor	$bgcolor	  $textcolor	$bgcolor
+#						Border		Background	Text		Indicator
+client.focused			$ubgcolor	$bgcolor	$ubgcolor	$bgcolor
+client.unfocused		$bgcolor	$bgcolor	$ubgcolor	$bgcolor
+client.focused_inactive	$bgcolor	$bgcolor	$textcolor	$bgcolor
+client.urgent			$bgcolor	$bgcolor	$textcolor	$bgcolor
 
-# Start i3bar to display a workspace bar (plus the system information i3status
-# finds out, if available)
+# Start i3bar to display a workspace bar (plus the system information i3status finds out, if available)
 bar {
+	status_command exec $HOME/.config/i3status/status
 	font pango:Sans 11
-  status_command i3status
 	position top
-  colors {
+	colors {
 		background $bgcolor
 		separator $textcolor_light
-		#		              	Border		    Background	  Text
-		focused_workspace  	$ubgcolor	    $ubgcolor	    $textcolor
-		inactive_workspace	$ibgcolor	    $ibgcolor	    $textcolor_light
-		urgent_workspace	  $gruvbox_red	$gruvbox_red	$textcolor	
+		#					Border			Background		Text
+		focused_workspace	$ubgcolor		$ubgcolor		$textcolor
+		inactive_workspace	$ibgcolor		$ibgcolor		$textcolor_light
+		urgent_workspace	$gruvbox_red	$gruvbox_red	$textcolor
 	} 
 }
 
-
 exec --no-startup-id volumeicon
-exec --no-startup-id blueman-applet
 exec --no-startup-id nitrogen --restore
 
+
 for_window [class="^.*"] border none
-title_align center
+#for_window [class="Navigator"] floating disable
 
 bindsym XF86MonBrightnessUp exec --no-startup-id light -A 10
 bindsym XF86MonBrightnessDown exec --no-startup-id light -U 10 
 bindsym $mod+b exec --no-startup-id rofimoji --skin-tone neutral --action clipboard --selector-args='-theme gruvbox-dark-hard -width 800'
-bindsym $mod+x exec --no-startup-id xfce4-screenshooter -c -r
+
+bindsym $alt+Control+l exec --no-startup-id light-locker-command -l
+bindsym $mod+Shift+x exec --no-startup-id xfce4-screenshooter -c -r
+bindsym $mod+x exec --no-startup-id xfce4-screenshooter -r 
+bindsym $mod+m bar mode toggle
 
 gaps inner 6 
 gaps outer 2
+
+title_align center
+for_window [class="mpv"] fullscreen disable, floating enable, resize set 640 480;
+bindsym $mod+Shift+s sticky toggle
 
